@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-public class ClientIntegrationTest {
+public class ClientIT {
 
     @Autowired
     private ClientController clientController;

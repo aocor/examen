@@ -3,6 +3,8 @@ package ar.com.plug.examen.domain.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,13 +27,19 @@ public class Vendor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false)
     private long vendorId;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "ssn")
     private String ssn;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private Timestamp dateCreated;
+
+    @UpdateTimestamp
+    private Timestamp lastModified;
 
     @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL)
     private Set<Transaction> transactions = new HashSet<>();

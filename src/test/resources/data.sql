@@ -1,6 +1,6 @@
-INSERT INTO clients (client_id, first_name, last_name) VALUES
-    (1, 'John', 'Smith'),
-    (2, 'Susan', 'Lauren');
+INSERT INTO clients (client_id, first_name, last_name, deleted) VALUES
+    (1, 'John', 'Smith', 0),
+    (2, 'Susan', 'Lauren', 0);
 
 INSERT INTO products (product_id, description, price) VALUES
     (11, 'product1', '10.00'),

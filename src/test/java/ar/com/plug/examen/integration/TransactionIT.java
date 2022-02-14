@@ -5,6 +5,7 @@ import ar.com.plug.examen.app.rest.ClientController;
 import ar.com.plug.examen.app.rest.TransactionController;
 import ar.com.plug.examen.app.rest.VendorController;
 import ar.com.plug.examen.domain.model.Transaction;
+import ar.com.plug.examen.domain.model.TransactionStatus;
 import ar.com.plug.examen.domain.model.TransactionType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-public class TransactionIntegrationTest {
+public class TransactionIT {
 
     @Autowired
     private TransactionController transactionController;
@@ -47,19 +49,21 @@ public class TransactionIntegrationTest {
     }
 
     @Test
-    public void testCreateTransactionWithInvalidClient() {
+    public void testConfirmTransaction() {
         List<Map<String, String>> products = new ArrayList<>();
         Map<String, String> item = new HashMap<>();
         item.put("product", "11");
         item.put("amount", "10");
         products.add(item);
 
-        Long invalidClientId = 4L;
-        TransactionApi request = new TransactionApi(TransactionType.BUY, invalidClientId, 2L, products);
+        TransactionApi request = new TransactionApi(TransactionType.BUY, 1L, 2L, products);
         ResponseEntity response = transactionController.createTransaction(request);
         Transaction transaction = (Transaction) response.getBody();
 
+        ResponseEntity response2 = transactionController.approveTransaction(transaction.getTransactionId());
+        transaction = (Transaction) response2.getBody();
+
         assertNotNull(transaction);
-        assertNotNull(transaction.getTransactionId());
+        assertEquals(TransactionStatus.APPROVED, transaction.getStatus());
     }
 }

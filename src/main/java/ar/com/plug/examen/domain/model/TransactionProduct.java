@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,13 +25,21 @@ public class TransactionProduct {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false)
     private long productTransactionId;
 
-    @ManyToOne
-    @JoinColumn(name = "productId", nullable = false)
+//    @ManyToOne
+//    @JoinColumn(name = "productId", nullable = false)
+//    private Product product;
+
+    @JoinColumn(name = "productId")
+    @ManyToOne(targetEntity = Product.class, fetch = FetchType.LAZY)
+    @JsonIgnore
     private Product product;
 
-    @Column(name = "amount")
+    @Column(name = "productId", insertable = false, updatable = false)
+    private Long productId;
+
     private Double amount;
 
     @ManyToOne(cascade = CascadeType.MERGE)
