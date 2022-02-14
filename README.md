@@ -214,10 +214,25 @@ Endpoints for creating and confirming transactions
 }
        ]
 
+  __Example__:
+
+
+       {
+          "type": "BUY",
+          "clientId": "1",
+          "vendorId": "1",
+          "products": [
+            {
+              "product": "1",
+              "amount": "10"
+            }
+          ]
+       }
+
   __Responses__:
     - 202 CREATED - body: transaction object
   
-
+  
 - Confirm transaction - PUT /payments/transactions/{id}/confirm
 
     ( the transactionStatus is updated to _"approved"_)
